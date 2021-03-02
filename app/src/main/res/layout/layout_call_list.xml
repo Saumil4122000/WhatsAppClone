@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal" android:padding="10dp" android:layout_height="wrap_content" android:layout_width="match_parent" xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.mikhaellopez.circularimageview.CircularImageView android:layout_height="60dp" android:layout_width="60dp" android:src="@drawable/ic_baseline_person_24" android:id="@+id/image_profile"/>
+
+
+    <LinearLayout android:orientation="vertical" android:layout_height="wrap_content" android:layout_width="0dp" android:layout_gravity="center_vertical" android:layout_marginStart="10dp" android:layout_weight="1"
+        android:layout_marginLeft="10dp">
+
+
+        <LinearLayout android:orientation="horizontal" android:layout_height="wrap_content" android:layout_width="match_parent">
+
+            <TextView android:layout_height="wrap_content" android:layout_width="0dp" android:id="@+id/tv_name" android:layout_weight="1" android:text="Username" android:textColor="@android:color/black" android:textStyle="bold" android:textSize="16sp"/>
+
+            <ImageView android:layout_height="30dp" android:layout_width="30dp"
+                android:src="@drawable/ic_baseline_phone_24"
+                app:tint="#63AC2E" />
+
+        </LinearLayout>
+
+
+        <LinearLayout android:orientation="horizontal" android:layout_height="wrap_content" android:layout_width="match_parent" android:gravity="center_vertical">
+
+            <ImageView android:padding="5dp" android:layout_height="15dp" android:layout_width="15dp"
+                android:src="@drawable/ic_baseline_arrow_downward_24" android:id="@+id/img_arrow"
+                android:layout_marginEnd="15dp" android:scaleType="center"
+                android:layout_marginRight="15dp"
+                app:tint="@android:color/holo_red_dark" />
+
+            <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/tv_date" android:text="15/04/2019,9:10 pm" android:textColor="#2E2E2E" android:textSize="14sp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/storm"
+    tools:context=".view.startup.WelcomeScreenActivity">
+    <RelativeLayout
+        android:id="@+id/main_relative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="30sp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:textColor="#419F46"
+            android:id="@+id/title"
+            android:text="@string/welcom_to_whatsapp_clone"/>
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:layout_below="@id/title"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/symbol"
+            android:src="@drawable/whatsapp" />
+
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/symbol"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="26dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp"
+            android:padding="20dp"
+            android:text="Read Our Privacy Policy. Tab Agree and continue to accept the Terms of service"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
+
+        <Button
+            android:layout_width="380dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:padding="0dp"
+            android:layout_marginTop="50dp"
+            android:id="@+id/agree_btn"
+            android:text="Agree And Continue"
+            android:background="#50CF55"
+            android:layout_below="@id/content"/>
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/main_relative"
+
+
+        android:layout_marginTop="60dp"
+        android:layout_centerHorizontal="true"
+
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="from"
+            android:textSize="16sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#50CF55"
+            android:text="S  A U  M  I  L"/>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+
+    android:layout_height="match_parent"
+    tools:context=".chats.ChatsActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:paddingLeft="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimary"
+        android:paddingStart="0dp"
+        android:layout_marginStart="0dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingStart="15dp"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal"
+            android:paddingLeft="15dp">
+
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_baseline_arrow_back_24"
+                android:tint="@color/mainText" />
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                app:civ_border="false"
+                android:id="@+id/image_profile"
+                android:src="@drawable/persin"/>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:paddingLeft="10dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:id="@+id/tv_username"
+                        android:textColor="@color/mainText"
+                        android:text="Username"/>
+
+                    <TextView
+                        android:id="@+id/tv_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="last seen at today at 9:00AM"
+                        android:textColor="@color/mainText"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/recyclerView"
+        android:background="@drawable/whatsapp_background_image"
+        android:layout_below="@id/toolbar"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:background="@color/key_board"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            app:cardCornerRadius="25dp"
+            app:cardElevation="2dp"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:orientation="horizontal"
+                android:paddingTop="5dp"
+                android:paddingEnd="15dp"
+                android:paddingBottom="5dp"
+                android:layout_marginLeft="15dp"
+                android:paddingRight="15dp">
+                <ImageView
+                    android:layout_width="30dp"
+                    android:src="@drawable/ic_baseline_emoji_emotions_24"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="15dp"
+                    android:id="@+id/btn_emojis"
+                    android:layout_height="30dp"
+                    android:baselineAlignBottom="true"
+                    android:layout_marginRight="15dp"
+                    app:tint="#737373" />
+                <EditText
+                    android:id="@+id/ed_message"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:background="@android:color/transparent"
+                    android:layout_marginEnd="10dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Type a message"
+                    android:layout_marginRight="10dp" />
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_marginEnd="15dp"
+                    android:src="@drawable/ic_baseline_attachment_24"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="30dp"
+                    app:tint="#737373"
+                    android:id="@+id/btn_attach"
+                    android:layout_marginRight="15dp" />
+                <ImageView
+                    android:layout_width="30dp"
+                    app:tint="#737373"
+                    android:id="@+id/btn_camera"
+                    android:src="@drawable/ic_camera_photo"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="30dp"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tint="@android:color/white"
+            android:layout_margin="5dp"
+            android:id="@+id/btn_voice"
+            android:src="@drawable/ic_baseline_keyboard_voice_24"/>
+
+    </LinearLayout>
+</RelativeLayout>
+
+
+</layout>

@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">WhatsApp</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="chats">Chats</string>
+    <string name="status">Status</string>
+    <string name="calls">Calls</string>
+    <string name="search">search</string>
+    <string name="more">more</string>
+    <string name="welcom_to_whatsapp_clone">Welcom To WhatsApp Clone</string>
+    <string name="profile_info">Profile Info</string>
+    <string name="message_group_call_tones"><![CDATA[Message, group, & call tones]]></string>
+    <string name="username">UserName</string>
+</resources>

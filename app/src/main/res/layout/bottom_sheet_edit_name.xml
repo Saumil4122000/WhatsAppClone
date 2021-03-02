@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+    <LinearLayout android:orientation="vertical"  android:padding="15dp" android:layout_height="wrap_content" android:layout_width="match_parent" xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="Enter your name" android:textStyle="bold" android:textSize="15sp" android:textColor="@android:color/black"/>
+
+    <EditText android:layout_height="wrap_content"
+
+        android:backgroundTint="@color/black"
+        android:textColor="@color/grey_60" android:layout_width="match_parent" android:hint="your name" android:layout_marginEnd="40dp"
+        android:layout_marginTop="10dp" android:id="@+id/ed_username"
+        android:layout_marginRight="40dp" />
+
+
+    <LinearLayout android:orientation="horizontal" android:layout_height="wrap_content" android:layout_width="match_parent">
+
+    <TextView android:layout_height="wrap_content" android:layout_width="0dp" android:layout_weight="1"/>
+
+    <Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="Cancel" android:textColor="@color/colorPrimary" android:id="@+id/btn_cancel" android:background="@android:color/transparent"/>
+
+    <Button android:layout_height="wrap_content" android:layout_width="wrap_content" android:text="Save" android:textColor="@color/colorPrimary" android:id="@+id/btn_save" android:background="@android:color/transparent"/>
+
+</LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/storm"
+    android:layout_height="wrap_content"
+    android:id="@+id/main"
+    tools:context=".contact.ContactsActivity">
+
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_alignParentTop="true"
+        android:layout_height="wrap_content"
+        android:id="@+id/main2"
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimary">
+
+
+    <LinearLayout android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimary">
+
+    <ImageButton android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:background="@android:color/transparent"
+        android:tint="@color/mainText"
+        android:src="@drawable/ic_baseline_arrow_back_24"
+        android:id="@+id/btn_back"/>
+
+    <TextView android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="15dp" android:textSize="15sp"
+        android:textColor="@color/mainText"
+        android:text="Select contact"
+        android:textStyle="bold"
+        android:layout_marginLeft="15dp" />
+
+</LinearLayout>
+
+</androidx.appcompat.widget.Toolbar>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/idRVCourses"
+        android:layout_below="@+id/main2"
+        android:layout_width="match_parent"
+        android:paddingTop="15dp"
+        android:layout_height="match_parent" />
+
+    <ProgressBar
+        android:id="@+id/idProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+</RelativeLayout>

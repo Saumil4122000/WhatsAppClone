@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<LinearLayout android:orientation="horizontal"
+    android:padding="10dp"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:layout_height="60dp"
+        android:layout_width="60dp"
+        android:src="@drawable/ic_baseline_person_24"
+        android:id="@+id/image_profile"/>
+
+
+    <LinearLayout android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="10dp"
+        android:layout_weight="1"
+        android:layout_marginLeft="10dp">
+
+
+        <LinearLayout android:orientation="horizontal"
+            android:layout_height="wrap_content"
+
+            android:layout_width="match_parent">
+
+            <TextView android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:id="@+id/tv_name"
+                android:layout_weight="1"
+                android:text="Username"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:textSize="16sp"/>
+
+            <TextView android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/tv_date"
+                android:text="15/04/2020"
+                android:textColor="#2E2E2E"
+                android:textSize="14sp"/>
+
+        </LinearLayout>
+
+        <TextView android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/tv_desc"
+            android:text="Description.."
+            android:textColor="#2E2E2E"
+            android:textSize="14sp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

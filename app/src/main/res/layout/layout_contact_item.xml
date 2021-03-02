@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<LinearLayout android:orientation="horizontal"
+    android:padding="5dp"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.mikhaellopez.circularimageview.CircularImageView android:layout_height="55dp"
+        app:civ_border="false"
+        android:layout_width="55dp" android:src="@drawable/maleuserprofilepicture"
+        android:id="@+id/image_profile"/>
+
+
+    <LinearLayout android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:paddingEnd="15dp"
+        android:paddingStart="15dp"
+        android:layout_gravity="center_vertical">
+
+    <TextView android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/tv_username" android:text="Username"
+        android:textColor="@color/mainText"  android:textSize="20sp"/>
+
+    <TextView android:layout_height="wrap_content" android:paddingTop="5sp" android:textSize="15sp" android:layout_width="wrap_content" android:id="@+id/tv_desc" android:textColor="@color/textAlt" android:text="Description..."/>
+
+</LinearLayout>
+
+</LinearLayout>

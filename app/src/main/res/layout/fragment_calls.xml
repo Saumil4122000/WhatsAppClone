@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/storm"
+    android:layout_height="match_parent"
+    tools:context=".menu.CallsFragment">
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/recyclerView"/>
+
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:layout_marginTop="30dp"
+    android:layout_marginLeft="30dp"
+    android:layout_marginRight="30dp"
+    android:orientation="vertical">
+    <TextView
+        android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+        android:textStyle="bold"
+        android:textSize="25dp"
+    android:text="Invite your firends"/>
+    <TextView android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:text="None of your contacts are using WhatsApp.\nUse the button below to invite them."
+        android:layout_marginBottom="20dp"/>
+    <Button android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textColor="@android:color/white"
+        android:text="Invite a friend"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
+        android:background="#089A14"/>
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:text="Chat with your friends who are use WhatsApp on iphone, \nAndroid, or KaiOS phone"
+        android:layout_marginBottom="20dp"/>
+</LinearLayout>
+</FrameLayout>
+</layout>
