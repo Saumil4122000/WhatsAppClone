@@ -1,7 +1,9 @@
-package com.example.geeksproject.model;
+package com.example.geeksproject.model.user;
 
 
 import android.net.Uri;
+
+import com.google.firebase.firestore.DocumentSnapshot;
 
 public class Users {
     private String userID;

@@ -3,12 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.geeksproject">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:allowBackup="true"
@@ -17,11 +24,23 @@
         android:roundIcon="@mipmap/whatsapp"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".view.status.DisplayStatusActivity"></activity>
+        <activity
+            android:name=".view.status.AddStatusPicActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".InterMediateActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".view.display.ReViewSendImageActivity" />
+        <activity
+            android:name=".view.profile.UserProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.chats.ChatsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".contact.ContactsActivity"
-            
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".chats.ChatsActivity" android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AboutActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -49,6 +68,20 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

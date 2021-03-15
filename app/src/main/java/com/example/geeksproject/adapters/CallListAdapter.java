@@ -1,6 +1,7 @@
 package com.example.geeksproject.adapters;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.view.LayoutInflater;
@@ -37,6 +38,7 @@ public class CallListAdapter extends RecyclerView.Adapter<CallListAdapter.Holder
         return new Holder(view);
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
 
@@ -45,27 +47,28 @@ public class CallListAdapter extends RecyclerView.Adapter<CallListAdapter.Holder
         holder.tvName.setText(calllist.getUserName());
 
         holder.tvDate.setText(calllist.getDate());
-        if (calllist.getCalltype().equals("missed")){
+        if (calllist.getCalltype().equals("missed")) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 holder.arrow.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_arrow_downward_24));
                 holder.arrow.getDrawable().setTint(context.getResources().getColor(android.R.color.holo_red_dark));
             }
-        }
-        else if (calllist.getCalltype().equals("income")){
+        } else if (calllist.getCalltype().equals("income")) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 holder.arrow.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_arrow_upward_24));
                 holder.arrow.getDrawable().setTint(context.getResources().getColor(android.R.color.holo_green_dark));
             }
-        }
-        else{
+        } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 holder.arrow.setImageDrawable(context.getDrawable(R.drawable.ic_baseline_arrow_upward_24));
                 holder.arrow.getDrawable().setTint(context.getResources().getColor(android.R.color.holo_green_dark));
             }
 
         }
-
-        Glide.with(context).load(calllist.getUrlProfile()).into(holder.profile);
+        if (calllist.getUrlProfile().equals("")) {
+          holder.profile.setImageResource(R.drawable.persin);
+        } else {
+            Glide.with(context).load(calllist.getUrlProfile()).into(holder.profile);
+        }
     }
 
     @Override

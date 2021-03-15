@@ -14,22 +14,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.geeksproject.MainActivity;
 import com.example.geeksproject.R;
-import com.example.geeksproject.model.Users;
+
+import com.example.geeksproject.model.user.Users;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.HashMap;
 
 
 public class SetUserInfoActivity extends AppCompatActivity {
-   // private ProgressDialog progressDialog;
 
-private ProgressBar progressBar;
+
+    private ProgressBar progressBar;
     private Button submitCourseBtn;
     private FirebaseAuth firebaseAuth;
     private String Name;
@@ -44,11 +41,11 @@ private ProgressBar progressBar;
 
         db = FirebaseFirestore.getInstance();
         EditText userNameEdt = findViewById(R.id.ed_name);
-        firebaseAuth=FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         submitCourseBtn = findViewById(R.id.btn_next);
 
-        progressBar= new ProgressBar(this);
+        progressBar = new ProgressBar(this);
 
         //doUpdate(Name);
         submitCourseBtn.setOnClickListener(new View.OnClickListener() {
@@ -60,7 +57,7 @@ private ProgressBar progressBar;
 
                 if (TextUtils.isEmpty(Name)) {
                     userNameEdt.setError("Please enter Course Name");
-                }  else {
+                } else {
                     progressBar.setVisibility(View.VISIBLE);
                     // calling method to add data to Firebase Firestore.
                     addDataToFirestore(Name);
@@ -73,11 +70,11 @@ private ProgressBar progressBar;
     private void addDataToFirestore(String Name) {
 
         String cid;
-        if(firebaseAuth.getCurrentUser()!=null) {
+        if (firebaseAuth.getCurrentUser() != null) {
             cid = firebaseAuth.getCurrentUser().getUid();
             CollectionReference dbCourses = db.collection("Users");
             //String uid= FirebaseAuth.getInstance().getUid();
-            Users users=new Users(cid,Name,firebaseAuth.getCurrentUser().getPhoneNumber(),"","","","","","","");
+            Users users = new Users(cid, Name, firebaseAuth.getCurrentUser().getPhoneNumber(), "", "", "", "", "", "", "");
             //firebaseAuth.getCurrentUser().getPhoneNumber();
             dbCourses.document(cid).set(users).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
@@ -99,18 +96,8 @@ private ProgressBar progressBar;
 
 
         }
-
-
     }
-
-
-
 }
-
-
-
-
-
 
 
 

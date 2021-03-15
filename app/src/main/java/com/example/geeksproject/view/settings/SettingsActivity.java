@@ -62,19 +62,28 @@ public class SettingsActivity extends AppCompatActivity {
                     String name=documentSnapshot.getString("userName");
                     String imageProfile = documentSnapshot.getString("imageProfile");
                     String about=documentSnapshot.getString("bio");
-                    if(imageProfile.equals(" ")){
-                        Glide.with(SettingsActivity.this).load(R.drawable.persin).into(binding.imageSettings);
 
+
+                    if(imageProfile==null || imageProfile.length()==0){
+                        Glide.with(SettingsActivity.this).load(R.drawable.persin).into(binding.imageSettings);
                     }
-                    if(about.equals(" ")){
-                       // Glide.with(SettingsActivity.this).load(R.drawable.persin).into(binding.imageSettings);
+                     else if(imageProfile.length()!=0 || imageProfile!=null){
+                        Glide.with(SettingsActivity.this).load(imageProfile).into(binding.imageSettings);
+                    }
+
+
+                     if(about.length()==0 || about==null){
+
                         binding.tvBio.setText("Busy");
                     }
+                    else
+                    {
+                        binding.tvBio.setText(about);
+                    }
 
 
-                    Glide.with(SettingsActivity.this).load(imageProfile).into(binding.imageSettings);
                     uname.setText(name);
-                    binding.tvBio.setText(about);
+
                 }
 
                 else{

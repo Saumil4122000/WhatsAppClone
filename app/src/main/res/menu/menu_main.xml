@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <group android:id="@+id/action_more">
+
+        <item android:title="Share" android:id="@+id/action_new_group"/>
+
+        <item android:title="Edit" android:id="@+id/action_new_broadcast"/>
+
+        <item android:title="View in address book" android:id="@+id/action_wa_web"/>
+
+        <item android:title="Verify security code" android:id="@+id/action_starred_message"/>
+
+
+    </group>
+</menu>

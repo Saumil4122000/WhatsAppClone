@@ -1,158 +1,356 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
-
-
-    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-
-    android:layout_height="match_parent"
-    tools:context=".chats.ChatsActivity">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:paddingLeft="0dp"
-        android:layout_marginLeft="0dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@color/colorPrimary"
-        android:paddingStart="0dp"
-        android:layout_marginStart="0dp">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:paddingStart="15dp"
-            android:background="@color/colorPrimary"
-            android:orientation="horizontal"
-            android:paddingLeft="15dp">
-
-            <ImageButton
-                android:id="@+id/btn_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_baseline_arrow_back_24"
-                android:tint="@color/mainText" />
-            <com.mikhaellopez.circularimageview.CircularImageView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                app:civ_border="false"
-                android:id="@+id/image_profile"
-                android:src="@drawable/persin"/>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:paddingLeft="10dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="13sp"
-                        android:id="@+id/tv_username"
-                        android:textColor="@color/mainText"
-                        android:text="Username"/>
-
-                    <TextView
-                        android:id="@+id/tv_status"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="last seen at today at 9:00AM"
-                        android:textColor="@color/mainText"
-                        android:textSize="13sp" />
-
-                </LinearLayout>
-
-        </LinearLayout>
-
-    </androidx.appcompat.widget.Toolbar>
-
-    <androidx.recyclerview.widget.RecyclerView
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recyclerView"
-        android:background="@drawable/whatsapp_background_image"
-        android:layout_below="@id/toolbar"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        tools:context=".chats.ChatsActivity">
 
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+                    <ImageButton
+                        android:id="@+id/btn_back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_baseline_arrow_back_24"
+                        android:background="@android:color/transparent"
+                        android:tint="@android:color/white"/>
+
+                    <com.mikhaellopez.circularimageview.CircularImageView
+                        android:id="@+id/image_profile"
+                        android:layout_width="30dp"
+                        app:civ_border="false"
+                        android:layout_height="30dp"
+                        android:src="@drawable/icon_male_ph"/>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="15dp"
+                        android:orientation="vertical"
+                        android:paddingLeft="15dp">
+
+                        <TextView
+                            android:id="@+id/tv_username"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/white"
+                            android:textSize="13sp"
+                            android:text="Username"/>
+                        <TextView
+                            android:id="@+id/tv_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/white"
+                            android:textSize="11sp"
+                            android:text="last seen today at 9:00am"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/whatsapp_background_image"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            android:layout_marginBottom="65dp"/>
+
+
         <androidx.cardview.widget.CardView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:background="@color/key_board"
+            android:id="@+id/layout_actions"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            app:cardCornerRadius="25dp"
-            app:cardElevation="2dp"
-            >
+            android:layout_above="@id/ln_action"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="70dp"
+            android:visibility="gone"
+            app:cardCornerRadius="15dp"
+            app:cardElevation="5dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:orientation="horizontal"
-                android:paddingTop="5dp"
-                android:paddingEnd="15dp"
-                android:paddingBottom="5dp"
-                android:layout_marginLeft="15dp"
-                android:paddingRight="15dp">
-                <ImageView
-                    android:layout_width="30dp"
-                    android:src="@drawable/ic_baseline_emoji_emotions_24"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="15dp"
-                    android:id="@+id/btn_emojis"
-                    android:layout_height="30dp"
-                    android:baselineAlignBottom="true"
-                    android:layout_marginRight="15dp"
-                    app:tint="#737373" />
-                <EditText
-                    android:id="@+id/ed_message"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
+                android:orientation="vertical"
+                android:padding="15dp">
 
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:background="@android:color/transparent"
-                    android:layout_marginEnd="10dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Type a message"
-                    android:layout_marginRight="10dp" />
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_marginEnd="15dp"
-                    android:src="@drawable/ic_baseline_attachment_24"
-                    android:layout_gravity="center_vertical"
-                    android:layout_height="30dp"
-                    app:tint="#737373"
-                    android:id="@+id/btn_attach"
-                    android:layout_marginRight="15dp" />
-                <ImageView
-                    android:layout_width="30dp"
-                    app:tint="#737373"
-                    android:id="@+id/btn_camera"
-                    android:src="@drawable/ic_camera_photo"
-                    android:layout_gravity="center_vertical"
-                    android:layout_height="30dp"/>
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/btn_doc"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <com.mikhaellopez.circularimageview.CircularImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/google_docs" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Document" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/btn_camera_x"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <com.mikhaellopez.circularimageview.CircularImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/ic_camera_photo" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Camera" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/btn_gallery"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <com.mikhaellopez.circularimageview.CircularImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/gallery" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Gallery" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/btn_audio"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <com.mikhaellopez.circularimageview.CircularImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/apps_ds_audio" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Audio" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/btn_location"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <com.mikhaellopez.circularimageview.CircularImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/google_maps" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Location" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/btn_contact"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <com.mikhaellopez.circularimageview.CircularImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/system_contacts" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Contact" />
+
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:tint="@android:color/white"
-            android:layout_margin="5dp"
-            android:id="@+id/btn_voice"
-            android:src="@drawable/ic_baseline_keyboard_voice_24"/>
 
-    </LinearLayout>
-</RelativeLayout>
+        <LinearLayout
+            android:id="@+id/ln_action"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/LL"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    app:cardCornerRadius="25dp"
+                    app:cardElevation="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:orientation="horizontal"
+                        android:paddingStart="15dp"
+                        android:paddingTop="5dp"
+                        android:paddingEnd="15dp"
+                        android:paddingBottom="5dp">
+
+                        <ImageView
+                            android:id="@+id/btn_emoji"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="10dp"
+                            android:src="@drawable/emoji"
+                            app:tint="@color/colorPrimary" />
+
+                        <EditText
+                            android:id="@+id/ed_message"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_weight="1"
+                            android:background="@android:color/transparent"
+                            android:hint="Type a message"
+                            android:padding="8dp" />
+
+                        <ImageView
+                            android:id="@+id/btn_attachment"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="15dp"
+                            android:layout_marginRight="15dp"
+                            android:src="@drawable/ic_baseline_attachment_24"
+                            app:tint="@color/colorPrimary" />
+
+                        <ImageView
+                            android:id="@+id/btn_camera"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/ic_camera_photo"
+                            app:tint="@color/colorPrimary" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/btn_send"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_margin="5dp"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:src="@drawable/ic_baseline_send_24"
+                    android:tint="@android:color/white"
+                    android:visibility="invisible" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <com.devlomi.record_view.RecordView
+            android:id="@+id/record_view"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom"
+            android:layout_margin="10dp"
+            android:layout_toStartOf="@id/record_button"
+            android:layout_toLeftOf="@id/record_button"
+            android:visibility="visible"
+            app:counter_time_color="#ff0000"
+            app:slide_to_cancel_arrow="@drawable/recv_ic_arrow"
+            app:slide_to_cancel_arrow_color="@android:color/black"
+            app:slide_to_cancel_bounds="6dp"
+            app:slide_to_cancel_margin_right="5dp"
+            app:slide_to_cancel_text="Slide To Cancel" />
+
+        <com.devlomi.record_view.RecordButton
+            android:id="@+id/record_button"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="6dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/recv_bg_mic"
+            android:backgroundTint="@color/colorAccent"
+            android:padding="17dp"
+            android:scaleType="centerInside"
+            android:tint="@android:color/white"
+            android:visibility="visible"
+            app:mic_icon="@drawable/recv_ic_mic" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
 </layout>

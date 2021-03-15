@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.concurrent.TimeUnit;
 
@@ -29,17 +30,26 @@ public class VerifyPhone extends AppCompatActivity {
     EditText otp;
     Button verify_btn;
     ProgressBar progressBar;
+    private FirebaseAuth mAuth;
+    private FirebaseUser firebaseUser;
+    private FirebaseFirestore firestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verify_phone);
-        FirebaseUser firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
+        //FirebaseUser firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
         otp = (EditText) findViewById(R.id.otp);
         verify_btn = (Button) findViewById(R.id.verify);
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
         progressBar.setVisibility(View.GONE);
+        mAuth = FirebaseAuth.getInstance();
+        firestore = FirebaseFirestore.getInstance();
 
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser!=null){
+            startActivity(new Intent(this,SetUserInfoActivity.class));
+        }
         String phoneNo = getIntent().getStringExtra("phoneNo");
     sendVerificationCodeToUser(phoneNo);
 

@@ -37,7 +37,7 @@
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                android:id="@+id/btn_edit"
+                    android:id="@+id/btn_edit"
                     android:padding="10dp"
                     android:src="@drawable/ic_baseline_edit_24"
                     android:background="@android:color/transparent"
@@ -64,5 +64,5 @@
             android:id="@+id/imageview"
             android:scaleType="fitCenter"
             />
-</LinearLayout>
+    </LinearLayout>
 </layout>

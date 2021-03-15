@@ -6,7 +6,7 @@
     <item>
 
 
-    -<shape>
+    <shape>
 
     <solid android:color="@color/mainText"/>
 
