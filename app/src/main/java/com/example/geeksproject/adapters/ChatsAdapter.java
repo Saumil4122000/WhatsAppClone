@@ -124,6 +124,7 @@ public class ChatsAdapter extends RecyclerView.Adapter {
                     }
                 }
             });
+
         }
 
         void bind(Chats messageModel) {
@@ -250,6 +251,7 @@ public class ChatsAdapter extends RecyclerView.Adapter {
             }
         }
     }
+
     @Override
     public int getItemViewType(int position) {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();

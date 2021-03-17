@@ -19,6 +19,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -53,6 +55,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.vanniktech.emoji.EmojiPopup;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -73,7 +76,6 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
     public static final int REQUEST_CORD_PERMISSION=332;
     private String send_img_profile;
     private ChatsAdapter adapter;
-    private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
     private List<Chats> list;
     private  String userProfile;
@@ -89,13 +91,26 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
     private Uri imageUri;
     Intent intent;
    //ValueEventListener seenListener;
+    LinearLayout linearLayout;
     public static final String URL="imageUri";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding= DataBindingUtil.setContentView(this,R.layout.activity_chats);
+        EmojiPopup popup=EmojiPopup.Builder.fromRootView(binding.rootView).build(binding.edMessage);
+        binding.btEmoji.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popup.toggle();
+            }
+        });
+        binding.btnSend.setOnClickListener(v -> {
+            if (!TextUtils.isEmpty(binding.edMessage.getText().toString())){
+                sendTextMsg(binding.edMessage.getText().toString());
 
-
+                binding.edMessage.setText("");
+            }
+        });
         initBtnClick();
         list=new ArrayList<>();
         LinearLayoutManager layoutManager=new LinearLayoutManager(this, RecyclerView.VERTICAL,false);
@@ -119,16 +134,9 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
         reference.child("Chats").push().setValue(chats).addOnSuccessListener(aVoid -> {
         }).addOnFailureListener(e -> Log.d("ChatServices","Error"+e.getMessage()));
 
-
-
-//        HashMap<String,Object> hashmap=new HashMap<>();
-//        hashmap.put("isseen",false);
-//        reference.child("Chats").push().setValue(hashmap);
         DatabaseReference chatref1=FirebaseDatabase.getInstance().getReference("ChatList").child(firebaseUser.getUid()).child(receiverID);
 
 
-
-      //  chatref1.child("chatId").push().setValue(hashmap);
         DatabaseReference chatref2=FirebaseDatabase.getInstance().getReference("ChatList").child(receiverID).child(firebaseUser.getUid());
         chatref2.child("chatId").setValue(firebaseUser.getUid());
 
@@ -149,7 +157,7 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
         TextView tvUsername=findViewById(R.id.tv_username);
         CircularImageView imageProfile=findViewById(R.id.image_profile);
 
-        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         Intent intent=getIntent();
@@ -211,13 +219,13 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
 
             }
         });
-        binding.btnSend.setOnClickListener(v -> {
-            if (!TextUtils.isEmpty(binding.edMessage.getText().toString())){
-                sendTextMsg(binding.edMessage.getText().toString());
-
-                binding.edMessage.setText("");
-            }
-        });
+//        binding.btnSend.setOnClickListener(v -> {
+//            if (!TextUtils.isEmpty(binding.edMessage.getText().toString())){
+//                sendTextMsg(binding.edMessage.getText().toString());
+//
+//                binding.edMessage.setText("");
+//            }
+//        });
         binding.btnAttachment.setOnClickListener(v -> {
             if (isActionShown){
                 binding.layoutActions.setVisibility(View.GONE);
@@ -242,7 +250,7 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
 
                 //Start Recording..
                 if (!checkPermissionFromDevice()) {
-                    binding.btnEmoji.setVisibility(View.INVISIBLE);
+                    binding.btEmoji.setVisibility(View.INVISIBLE);
                     binding.btnAttachment.setVisibility(View.INVISIBLE);
                     binding.btnCamera.setVisibility(View.INVISIBLE);
                     binding.edMessage.setVisibility(View.INVISIBLE);
@@ -270,7 +278,7 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
 
             @Override
             public void onFinish(long recordTime) {
-                binding.btnEmoji.setVisibility(View.VISIBLE);
+                binding.btEmoji.setVisibility(View.VISIBLE);
                 binding.btnAttachment.setVisibility(View.VISIBLE);
                 binding.btnCamera.setVisibility(View.VISIBLE);
                 binding.edMessage.setVisibility(View.VISIBLE);
@@ -286,7 +294,7 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
 
             @Override
             public void onLessThanSecond() {
-                binding.btnEmoji.setVisibility(View.VISIBLE);
+                binding.btEmoji.setVisibility(View.VISIBLE);
                 binding.btnAttachment.setVisibility(View.VISIBLE);
                 binding.btnCamera.setVisibility(View.VISIBLE);
                 binding.edMessage.setVisibility(View.VISIBLE);
@@ -295,7 +303,7 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
         binding.recordView.setOnBasketAnimationEndListener(new OnBasketAnimationEnd() {
             @Override
             public void onAnimationEnd() {
-                binding.btnEmoji.setVisibility(View.VISIBLE);
+                binding.btEmoji.setVisibility(View.VISIBLE);
                 binding.btnAttachment.setVisibility(View.VISIBLE);
                 binding.btnCamera.setVisibility(View.VISIBLE);
                 binding.edMessage.setVisibility(View.VISIBLE);
@@ -450,6 +458,7 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
                     });
 
                 }
+
             }
 
             @Override

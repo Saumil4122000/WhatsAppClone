@@ -111,7 +111,7 @@ public class ContactsActivity extends AppCompatActivity {
                     while (pCur.moveToNext()) {
                         String phoneNo = pCur.getString(pCur.getColumnIndex(
                                 ContactsContract.CommonDataKinds.Phone.NUMBER));
-                        Log.d("TAG",phoneNo);
+                        //Log.d("TAG",phoneNo);
                         phonelist.add(phoneNo);
 
                     }
