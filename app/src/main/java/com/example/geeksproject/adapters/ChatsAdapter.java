@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -28,6 +29,11 @@ import com.example.geeksproject.model.chat.Chats;
 import com.example.geeksproject.tools.AudioService;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.List;
@@ -77,10 +83,28 @@ public class ChatsAdapter extends RecyclerView.Adapter {
         Chats message = list.get(position);
         switch (holder.getItemViewType()) {
             case MSG_TYPE_RIGHT:
+                if (position==list.size()-1){
+                    if (message.isIsseen()){
+                        ((SentMessageHolder) holder).imageSeen.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.doubletick,null));
+                    }
+                    else{
+                        ((SentMessageHolder) holder).imageSeen.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.tick,null));
+                    }
+                }
+               else {
+                   if (message.isIsseen()) {
+                       ((SentMessageHolder) holder).imageSeen.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(), R.drawable.doubletick, null));
+                   }
+                   else {
+                       ((SentMessageHolder) holder).imageSeen.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(),R.drawable.tick,null));
+
+                   }
+                }
                 ((SentMessageHolder) holder).bind(message);
-//
+
                 break;
             case MSG_TYPE_LEFT:
+
                 ((ReceivedMessageHolder) holder).bind(message);
         }
 
@@ -93,13 +117,13 @@ public class ChatsAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         return list.size();
     }
-    private class SentMessageHolder extends RecyclerView.ViewHolder{
+    public class SentMessageHolder extends RecyclerView.ViewHolder{
         private TextView textMessage;
         private CircularImageView c;
         private LinearLayout layoutText,layoutImage,layoutVoice;
         private ImageView imageChat;
         private ContactsAdapter.ViewHolder tmpHolder;
-       // private ImageView imageSeen;
+        private ImageView imageSeen;
         private TextView time;
         public SentMessageHolder(@NonNull View itemView) {
             super(itemView);
@@ -111,7 +135,7 @@ public class ChatsAdapter extends RecyclerView.Adapter {
             layoutImage=itemView.findViewById(R.id.layout_image);
             layoutText=itemView.findViewById(R.id.layout_text);
             btnPlay=itemView.findViewById(R.id.btn_play_chat);
-           // imageSeen=itemView.findViewById(R.id.chat_tick);
+            imageSeen=itemView.findViewById(R.id.chat_tick);
             time=itemView.findViewById(R.id.time);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

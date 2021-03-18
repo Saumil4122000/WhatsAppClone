@@ -69,7 +69,9 @@ else if(!courses.getImageProfile().isEmpty() || courses.getImageProfile()!=null)
                         .putExtra("userName", courses.getUserName())
                         .putExtra("userProfile", courses.getImageProfile())
                         .putExtra("userPhone",courses.getUserPhone())
-                        .putExtra("bio",courses.getBio()));
+                        .putExtra("bio",courses.getBio())
+                        .putExtra("typingTo",courses.getTypingTo())
+                );
 
             }
         });

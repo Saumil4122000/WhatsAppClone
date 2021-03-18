@@ -8,10 +8,10 @@ import java.io.IOException;
 public class AudioService {
     private Context context;
     private MediaPlayer tmpMediaPlater;
+    MediaPlayer mediaPlayer=new MediaPlayer();
     private OnplayCallBack onplayCallBack;
     public AudioService(Context context) {
         this.context = context;
-        //this.onplayCallBack = new MediaPlayer();
     }
 
     public void playAudioFromURL(String url, OnplayCallBack onPlayCallBack){
@@ -19,7 +19,7 @@ public class AudioService {
         if (tmpMediaPlater!=null){
             tmpMediaPlater.stop();
         }
-        MediaPlayer mediaPlayer=new MediaPlayer();
+
         try{
 
             mediaPlayer.setDataSource(url);
@@ -29,7 +29,7 @@ public class AudioService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+        tmpMediaPlater.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
                 mp.release();

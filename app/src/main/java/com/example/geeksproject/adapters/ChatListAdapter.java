@@ -3,6 +3,7 @@ package com.example.geeksproject.adapters;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.geeksproject.R;
 import com.example.geeksproject.model.Chatlist;
+import com.example.geeksproject.model.chat.Chats;
 import com.example.geeksproject.view.chats.ChatsActivity;
 import com.example.geeksproject.view.dialog.DialogViewUser;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.List;
@@ -24,7 +33,7 @@ import java.util.List;
 public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.Holder> {
     private List<Chatlist> list;
     private Context context;
-
+    String thelastMessage;
     public ChatListAdapter(List<Chatlist> list, Context context) {
         this.list = list;
         this.context = context;
@@ -52,7 +61,7 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.Holder
             Glide.with(context).load(chatlist.getUrlProfile()).into(holder.profile);
         }
 
-
+        initMessage(chatlist.getUserID(),holder.tvDesc);
 
         if (chatlist.getDescription().length()==0 || chatlist.getDescription()==null){
             holder.tvDesc.setText("Busy");
@@ -96,6 +105,39 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.Holder
             profile = itemView.findViewById(R.id.image_profile);
         }
     }
+    private void initMessage(String userid,final TextView lastChat){
+        thelastMessage="default";
+        FirebaseUser firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference reference= FirebaseDatabase.getInstance().getReference("Chats");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot:dataSnapshot.getChildren()){
+                    Chats chats=snapshot.getValue(Chats.class);
+                    assert firebaseUser != null;
+                    assert chats != null;
+                    if (chats.getReceiver().equals(firebaseUser.getUid()) && chats.getSender().equals(userid)
+                            || chats.getReceiver().equals(userid) && chats.getSender().equals(firebaseUser.getUid())){
+                        thelastMessage=chats.getTextMessage();
+
+                    }
+                }
+                switch (thelastMessage){
+                    case "default":lastChat.setText("No message");
+                        break;
+                    default: lastChat.setText(thelastMessage);
+                    break;
+                }
+                thelastMessage="default";
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
 }
 
 

@@ -2,11 +2,12 @@ package com.example.geeksproject.menu;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -17,6 +18,7 @@ import com.example.geeksproject.R;
 import com.example.geeksproject.adapters.ChatListAdapter;
 import com.example.geeksproject.databinding.FragmentChatsBinding;
 import com.example.geeksproject.model.Chatlist;
+import com.example.geeksproject.model.user.Users;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,6 +27,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -32,7 +35,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class ChatsFragment extends Fragment {
 
@@ -71,13 +73,54 @@ public class ChatsFragment extends Fragment {
         reference = FirebaseDatabase.getInstance().getReference();
         firebaseFirestore = FirebaseFirestore.getInstance();
 
-
+//        binding.searchtext.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                searchUser(s.toString());
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//            }
+//        });
         if (firebaseUser!=null) {
             getChatList();
         }
 
         return binding.getRoot();
     }
+
+//    private void searchUser(String s) {
+//
+//        Query query=FirebaseDatabase.getInstance().getReference("Users").orderByChild("userName").startAt(s).endAt(s+"\uf8ff");
+//        query.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                if (binding.searchtext.getText().toString().equals("")){
+//                    list.clear();
+//                    for (DataSnapshot snapshot:dataSnapshot.getChildren()){
+//                        Chatlist chat = snapshot.getValue(Chatlist.class);
+//                        if (!chat.getUserID().equals(firebaseUser.getUid())){
+//                            list.add(chat);
+//                        }
+//                    }
+//                }
+//                adapter=new ChatListAdapter(list,getContext());
+//                binding.recyclerView.setAdapter(adapter);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+//    }
 
     private void getChatList() {
         binding.progressCircular.setVisibility(View.VISIBLE);
@@ -90,8 +133,7 @@ public class ChatsFragment extends Fragment {
 
 
                             String userID = snapshot.child("chatId").getValue(String.class);
-                            Log.d(TAG, "chhildcount: userid " + dataSnapshot.getChildrenCount());
-                            Log.d(TAG,"chhildcount: userid "+ snapshot.child("chatId").getValue());
+
                             binding.progressCircular.setVisibility(View.GONE);
                             allUserID.add(userID);
   }

@@ -73,9 +73,9 @@ public class SetUserInfoActivity extends AppCompatActivity {
         if (firebaseAuth.getCurrentUser() != null) {
             cid = firebaseAuth.getCurrentUser().getUid();
             CollectionReference dbCourses = db.collection("Users");
-            //String uid= FirebaseAuth.getInstance().getUid();
-            Users users = new Users(cid, Name, firebaseAuth.getCurrentUser().getPhoneNumber(), "", "", "", "", "", "", "");
-            //firebaseAuth.getCurrentUser().getPhoneNumber();
+
+            Users users = new Users(cid, Name, firebaseAuth.getCurrentUser().getPhoneNumber(), "", "", "", "", "", "", "","noOne");
+
             dbCourses.document(cid).set(users).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {

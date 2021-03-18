@@ -16,7 +16,17 @@ public class Users {
     private String gender;
     private String status;
     private String bio;
-  // private String about;
+    private String typingTo;
+
+    public String getTypingTo() {
+        return typingTo;
+    }
+
+    public void setTypingTo(String typingTo) {
+        this.typingTo = typingTo;
+    }
+
+    // private String about;
     public Users() {
     }
 
@@ -32,7 +42,21 @@ public class Users {
         this.gender = gender;
         this.status = status;
         this.bio = bio;
-       //this.about=about;
+
+    }
+
+    public Users( String userID, String userName, String userPhone, String imageProfile, String imageCover, String email, String dateOfBirth, String gender, String status, String bio,String typingTo) {
+        this.userID = userID;
+        this.userName = userName;
+        this.userPhone = userPhone;
+        this.imageProfile = imageProfile;
+        this.imageCover = imageCover;
+        this.email = email;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
+        this.status = status;
+        this.bio = bio;
+        this.typingTo=typingTo;
     }
 
     public String getUserID() {

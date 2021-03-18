@@ -42,9 +42,14 @@ import com.example.geeksproject.adapters.ChatsAdapter;
 import com.example.geeksproject.databinding.ActivityChatsBinding;
 import com.example.geeksproject.managers.ChatService;
 import com.example.geeksproject.model.chat.Chats;
+import com.example.geeksproject.model.user.Users;
 import com.example.geeksproject.service.FirebaseService;
 import com.example.geeksproject.view.dialog.DialogReviewSendImage;
 import com.example.geeksproject.view.profile.UserProfileActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -52,8 +57,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.vanniktech.emoji.EmojiPopup;
 
@@ -62,6 +75,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -81,6 +95,7 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
     private  String userProfile;
     private String  phone_no;
     private String bio;
+
     private String sTime;
     private Vibrator vibrator;
     private String audio_path;
@@ -89,10 +104,8 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
     private boolean isActionShown=false;
     private ChatService chatService;
     private Uri imageUri;
-    Intent intent;
-   //ValueEventListener seenListener;
-    LinearLayout linearLayout;
     public static final String URL="imageUri";
+    ValueEventListener seenlistener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,16 +120,42 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
         binding.btnSend.setOnClickListener(v -> {
             if (!TextUtils.isEmpty(binding.edMessage.getText().toString())){
                 sendTextMsg(binding.edMessage.getText().toString());
-
                 binding.edMessage.setText("");
             }
         });
         initBtnClick();
         list=new ArrayList<>();
+
         LinearLayoutManager layoutManager=new LinearLayoutManager(this, RecyclerView.VERTICAL,false);
         layoutManager.setStackFromEnd(true);
         binding.recyclerView.setLayoutManager(layoutManager);
+
+
+
+        binding.edMessage.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().isEmpty()){
+                    checkTypingStatus("noOne");
+                }
+                else{
+                    checkTypingStatus(receiverID);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         readChatData();
+        seenMessage(receiverID);
     }
 
     public void  sendTextMsg(String text){
@@ -128,14 +167,15 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
         Calendar currentDateTime=Calendar.getInstance();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat df=new SimpleDateFormat("hh:mm a");
         String currentTime=df.format(currentDateTime.getTime());
-        Chats chats=new Chats(today+", "+currentTime,text,"","TEXT",firebaseUser.getUid(),receiverID);
 
 
-        reference.child("Chats").push().setValue(chats).addOnSuccessListener(aVoid -> {
+        Chats chats=new Chats(today+", "+currentTime,text,"","TEXT",firebaseUser.getUid(),receiverID,false);
+         DatabaseReference reference=  FirebaseDatabase.getInstance().getReference();
+         reference.child("Chats").push().setValue(chats).addOnSuccessListener(aVoid -> {
         }).addOnFailureListener(e -> Log.d("ChatServices","Error"+e.getMessage()));
 
         DatabaseReference chatref1=FirebaseDatabase.getInstance().getReference("ChatList").child(firebaseUser.getUid()).child(receiverID);
-
+        chatref1.child("chatId").setValue(receiverID);
 
         DatabaseReference chatref2=FirebaseDatabase.getInstance().getReference("ChatList").child(receiverID).child(firebaseUser.getUid());
         chatref2.child("chatId").setValue(firebaseUser.getUid());
@@ -143,6 +183,12 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        reference.removeEventListener(seenlistener);
+        checkTypingStatus("noOne");
+    }
 
     private void openGallery() {
         Intent i=new Intent();
@@ -157,7 +203,7 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
         TextView tvUsername=findViewById(R.id.tv_username);
         CircularImageView imageProfile=findViewById(R.id.image_profile);
 
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         Intent intent=getIntent();
@@ -172,8 +218,6 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
         userProfile=intent.getStringExtra("userProfile");
         receiverID=intent.getStringExtra("userID");
         bio=intent.getStringExtra("bio");
-
-
 
 
 
@@ -219,13 +263,7 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
 
             }
         });
-//        binding.btnSend.setOnClickListener(v -> {
-//            if (!TextUtils.isEmpty(binding.edMessage.getText().toString())){
-//                sendTextMsg(binding.edMessage.getText().toString());
-//
-//                binding.edMessage.setText("");
-//            }
-//        });
+
         binding.btnAttachment.setOnClickListener(v -> {
             if (isActionShown){
                 binding.layoutActions.setVisibility(View.GONE);
@@ -248,7 +286,6 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
             @Override
             public void onStart() {
 
-                //Start Recording..
                 if (!checkPermissionFromDevice()) {
                     binding.btEmoji.setVisibility(View.INVISIBLE);
                     binding.btnAttachment.setVisibility(View.INVISIBLE);
@@ -310,6 +347,43 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
             }
         });
 
+        }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseFirestore db=FirebaseFirestore.getInstance();
+        CollectionReference ref=db.collection("Users");
+       String userID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        ref.addSnapshotListener(this, new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error!=null){
+                    return;
+                }
+                else{
+                    if (value!=null) {
+                        for (DocumentChange dc : value.getDocumentChanges()) {
+                            DocumentSnapshot documentSnapshot = dc.getDocument();
+                            String typingStatus = documentSnapshot.getString("typingTo");
+                            String cid = documentSnapshot.getString("userID");
+                            if (cid.equals(userID)) {
+                                continue;
+                            } else {
+                                if (cid.equals(receiverID)) {
+                                    if (typingStatus.equals(userID)) {
+                                        binding.tvStatus.setText("typing");
+                                    } else {
+                                        binding.tvStatus.setText("No Typing");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 
     @SuppressLint("DefaultLocale")
@@ -389,7 +463,7 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
         if(requestCode==IMAGGE_GALLERY_REQUEST && resultCode==RESULT_OK && data!=null && data.getData()!=null){
             imageUri=data.getData();
         }
-        //uploadImagetoFirebase();
+
         try {
             Bitmap bitmap= MediaStore.Images.Media.getBitmap(getContentResolver(),imageUri);
             reviewImage(bitmap);
@@ -398,27 +472,29 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
         }
     }
 
-//    private void seenMessage(String userID){
-//        reference=FirebaseDatabase.getInstance().getReference("Chats");
-//        seenListener=reference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                for (DataSnapshot snapshot:dataSnapshot.getChildren()){
-//                    Chats chat=snapshot.getValue(Chats.class);
-//                    if (chat.getReceiver().equals(firebaseUser.getUid()) &&  chat.getSender().equals(userID)){
-//                        HashMap<String,Object> hashMap=new HashMap<>();
-//                        hashMap.put("isseen",true);
-//                        snapshot.getRef().updateChildren(hashMap);
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-//    }
+    private void seenMessage(String userID){
+        DatabaseReference reference =FirebaseDatabase.getInstance().getReference("Chats");
+        seenlistener=reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot:dataSnapshot.getChildren()){
+                    Chats chat=snapshot.getValue(Chats.class);
+                    assert firebaseUser != null;
+                    assert userID != null;
+                    if (chat.getReceiver().equals(firebaseUser.getUid()) &&  chat.getSender().equals(userID)){
+                        HashMap<String,Object> hashMap=new HashMap<>();
+                        hashMap.put("isseen",true);
+                        snapshot.getRef().updateChildren(hashMap);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 
 
     public void readChatData(){
@@ -496,7 +572,21 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
         });
     }
 
-
+    private void checkTypingStatus(String typing){
+        FirebaseUser cid=FirebaseAuth.getInstance().getCurrentUser();
+        assert cid != null;
+        firebaseFirestore.collection("Users").document(cid.getUid()).update("typingTo",typing).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                //Log.d("ChatsKey","Updated");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
+    }
     @Override
     public void onItemClick(int position) {
 
