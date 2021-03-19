@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
                 editText.setVisibility(View.VISIBLE);
             break;
 
-            case R.id.action_new_group :  Toast.makeText(MainActivity.this, "Action New Group", Toast.LENGTH_LONG).show(); break;
+            case R.id.action_new_group :  startActivity(new Intent(getApplicationContext(),GroupCreateActivity.class)); break;
             case R.id.action_new_broadcast :  Toast.makeText(MainActivity.this, "Action New Broadcast", Toast.LENGTH_LONG).show(); break;
             case R.id.action_wa_web :  Toast.makeText(MainActivity.this, "Action Web", Toast.LENGTH_LONG).show(); break;
             case R.id.action_starred_message : Toast.makeText(MainActivity.this, "Action starred message", Toast.LENGTH_LONG).show();

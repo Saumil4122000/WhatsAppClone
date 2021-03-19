@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.media.MediaRecorder;
@@ -37,10 +38,16 @@ import com.bumptech.glide.Glide;
 import com.devlomi.record_view.OnBasketAnimationEnd;
 import com.devlomi.record_view.OnRecordListener;
 import com.example.geeksproject.InterMediateActivity;
+import com.example.geeksproject.Notification.Client;
+import com.example.geeksproject.Notification.Data;
+import com.example.geeksproject.Notification.Myresponse;
+import com.example.geeksproject.Notification.Sender;
+import com.example.geeksproject.Notification.Token;
 import com.example.geeksproject.R;
 import com.example.geeksproject.adapters.ChatsAdapter;
 import com.example.geeksproject.databinding.ActivityChatsBinding;
 import com.example.geeksproject.managers.ChatService;
+import com.example.geeksproject.menu.APIService;
 import com.example.geeksproject.model.chat.Chats;
 import com.example.geeksproject.model.user.Users;
 import com.example.geeksproject.service.FirebaseService;
@@ -56,6 +63,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
@@ -64,22 +72,29 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.auth.User;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.vanniktech.emoji.EmojiPopup;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnItemClickListner {
     private ActivityChatsBinding binding;
@@ -95,8 +110,10 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
     private  String userProfile;
     private String  phone_no;
     private String bio;
-
+    APIService apiService;
     private String sTime;
+    String userid;
+    boolean notify=false;
     private Vibrator vibrator;
     private String audio_path;
     private MediaRecorder mediaRecorder;
@@ -106,6 +123,7 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
     private Uri imageUri;
     public static final String URL="imageUri";
     ValueEventListener seenlistener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,7 +135,11 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
                 popup.toggle();
             }
         });
+
+        apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
+
         binding.btnSend.setOnClickListener(v -> {
+            notify=true;
             if (!TextUtils.isEmpty(binding.edMessage.getText().toString())){
                 sendTextMsg(binding.edMessage.getText().toString());
                 binding.edMessage.setText("");
@@ -129,7 +151,6 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
         LinearLayoutManager layoutManager=new LinearLayoutManager(this, RecyclerView.VERTICAL,false);
         layoutManager.setStackFromEnd(true);
         binding.recyclerView.setLayoutManager(layoutManager);
-
 
 
         binding.edMessage.addTextChangedListener(new TextWatcher() {
@@ -153,7 +174,7 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
 
             }
         });
-
+        updateToken(FirebaseInstanceId.getInstance().getToken());
         readChatData();
         seenMessage(receiverID);
     }
@@ -180,14 +201,88 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
         DatabaseReference chatref2=FirebaseDatabase.getInstance().getReference("ChatList").child(receiverID).child(firebaseUser.getUid());
         chatref2.child("chatId").setValue(firebaseUser.getUid());
 
-
+       FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+        final  String msg=text;
+       DocumentReference reference1=firebaseFirestore.collection("Users").document(firebaseUser.getUid());
+       reference1.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+           @Override
+           public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+               if (error!=null){
+                   return;
+               }
+               else{
+                   String uname=value.getString("userName");
+                   if (notify){
+                       sendNotification(receiverID,uname,msg);
+                   }
+                   notify=false;
+               }
+           }
+       });
     }
 
+
+
+
+
+    private void sendNotification(String receiver, final String username,  String msg) {
+
+        Intent intent = getIntent();
+        String userId = intent.getStringExtra("userId");
+        DatabaseReference tokens = FirebaseDatabase.getInstance().getReference("Token");
+        Query query = tokens.orderByKey().equalTo(receiver);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Token token = snapshot.getValue(Token.class);
+                    Data data = new Data(firebaseUser.getUid(), R.drawable.whatsapp123, username + ": " + msg, "New Message", userId);
+
+                    Sender sender = new Sender(data, token.getToken());
+
+                    apiService.sendNotification(sender)
+                            .enqueue(new Callback<Myresponse>() {
+                                @Override
+                                public void onResponse(Call<Myresponse> call, Response<Myresponse> response) {
+                                    if (response.code() == 200 ) {
+                                        if (response.body().success != 1){
+                                            Toast.makeText(ChatsActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Myresponse> call, Throwable t) {
+
+                                }
+                            });
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
     @Override
     protected void onPause() {
         super.onPause();
+        String timestamp=String.valueOf(System.currentTimeMillis());
+        checkOnlineStatus(timestamp);
         reference.removeEventListener(seenlistener);
-        checkTypingStatus("noOne");
+
+    }
+    private void updateToken(String token) {
+        DatabaseReference tokenRef = FirebaseDatabase.getInstance().getReference("Token");
+        Token token1 = new Token(token);
+        tokenRef.child(firebaseUser.getUid()).setValue(token1);
+    }
+    @Override
+    protected void onResume() {
+        checkOnlineStatus("online");
+        super.onResume();
     }
 
     private void openGallery() {
@@ -349,13 +444,14 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
 
         }
 
-
     @Override
     protected void onStart() {
         super.onStart();
+        checkTypingStatus("noOne");
+        checkOnlineStatus("online");
         FirebaseFirestore db=FirebaseFirestore.getInstance();
         CollectionReference ref=db.collection("Users");
-       String userID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        String userID = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         ref.addSnapshotListener(this, new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -367,6 +463,7 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
                         for (DocumentChange dc : value.getDocumentChanges()) {
                             DocumentSnapshot documentSnapshot = dc.getDocument();
                             String typingStatus = documentSnapshot.getString("typingTo");
+                            String onlinestatus=documentSnapshot.getString("onlineStatus");
                             String cid = documentSnapshot.getString("userID");
                             if (cid.equals(userID)) {
                                 continue;
@@ -375,7 +472,20 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
                                     if (typingStatus.equals(userID)) {
                                         binding.tvStatus.setText("typing");
                                     } else {
-                                        binding.tvStatus.setText("No Typing");
+                                       if (onlinestatus.equals("online")){
+                                           binding.tvStatus.setText(onlinestatus);
+                                       }
+                                       else{
+                                           //Date date= Calendar.getInstance().getTime();
+
+                                           Calendar currentDateTime=Calendar.getInstance(Locale.ENGLISH);
+                                           currentDateTime.setTimeInMillis(Long.parseLong(onlinestatus));
+                                           @SuppressLint("SimpleDateFormat") SimpleDateFormat df=new SimpleDateFormat("dd/MM/yyyy hh:mm aa");
+                                           String currentTime=df.format(currentDateTime.getTime());
+
+                                           binding.tvStatus.setText("Last Seen At "+currentTime);
+
+                                       }
                                     }
                                 }
                             }
@@ -597,5 +707,24 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
             i.putExtra(URL, clickItem.getUrl());
             startActivity(i);
         }
+    }
+
+    private void checkOnlineStatus(String status){
+        FirebaseUser cid=FirebaseAuth.getInstance().getCurrentUser();
+
+        firebaseFirestore.collection("Users").document(cid.getUid()).update("onlineStatus",status).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
+        SharedPreferences.Editor editor = getSharedPreferences("PREFS", MODE_PRIVATE).edit();
+        editor.putString("currentuser", cid.getUid());
+        editor.apply();
     }
 }

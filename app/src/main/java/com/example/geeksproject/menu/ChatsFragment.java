@@ -2,6 +2,7 @@ package com.example.geeksproject.menu;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.TokenWatcher;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -14,6 +15,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.geeksproject.Notification.Token;
 import com.example.geeksproject.R;
 import com.example.geeksproject.adapters.ChatListAdapter;
 import com.example.geeksproject.databinding.FragmentChatsBinding;
@@ -32,6 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +63,6 @@ public class ChatsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_chats, container, false);
 
         list = new ArrayList<>();
@@ -73,54 +75,14 @@ public class ChatsFragment extends Fragment {
         reference = FirebaseDatabase.getInstance().getReference();
         firebaseFirestore = FirebaseFirestore.getInstance();
 
-//        binding.searchtext.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                searchUser(s.toString());
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
+
         if (firebaseUser!=null) {
             getChatList();
         }
-
+        updateToken(FirebaseInstanceId.getInstance().getToken());
         return binding.getRoot();
     }
 
-//    private void searchUser(String s) {
-//
-//        Query query=FirebaseDatabase.getInstance().getReference("Users").orderByChild("userName").startAt(s).endAt(s+"\uf8ff");
-//        query.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                if (binding.searchtext.getText().toString().equals("")){
-//                    list.clear();
-//                    for (DataSnapshot snapshot:dataSnapshot.getChildren()){
-//                        Chatlist chat = snapshot.getValue(Chatlist.class);
-//                        if (!chat.getUserID().equals(firebaseUser.getUid())){
-//                            list.add(chat);
-//                        }
-//                    }
-//                }
-//                adapter=new ChatListAdapter(list,getContext());
-//                binding.recyclerView.setAdapter(adapter);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-//    }
 
     private void getChatList() {
         binding.progressCircular.setVisibility(View.VISIBLE);
@@ -193,7 +155,12 @@ public class ChatsFragment extends Fragment {
             }
         });
     }
+public void updateToken(String token){
+        DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Token");
+        Token token1=new Token(token);
+        reference.child(firebaseUser.getUid()).setValue(token1);
 
+}
 }
 
 

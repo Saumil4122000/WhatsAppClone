@@ -17,13 +17,21 @@ public class Users {
     private String status;
     private String bio;
     private String typingTo;
-
+    private String onlineStatus;
     public String getTypingTo() {
         return typingTo;
     }
 
     public void setTypingTo(String typingTo) {
         this.typingTo = typingTo;
+    }
+
+    public String getOnlineStatus() {
+        return onlineStatus;
+    }
+
+    public void setOnlineStatus(String onlineStatus) {
+        this.onlineStatus = onlineStatus;
     }
 
     // private String about;
@@ -45,7 +53,7 @@ public class Users {
 
     }
 
-    public Users( String userID, String userName, String userPhone, String imageProfile, String imageCover, String email, String dateOfBirth, String gender, String status, String bio,String typingTo) {
+    public Users( String userID, String userName, String userPhone, String imageProfile, String imageCover, String email, String dateOfBirth, String gender, String status, String bio,String typingTo,String onlineStatus) {
         this.userID = userID;
         this.userName = userName;
         this.userPhone = userPhone;
@@ -57,6 +65,7 @@ public class Users {
         this.status = status;
         this.bio = bio;
         this.typingTo=typingTo;
+        this.onlineStatus=onlineStatus;
     }
 
     public String getUserID() {
