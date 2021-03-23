@@ -704,7 +704,7 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
         if (clickItem.getType().equals("IMAGE")) {
             Intent i = new Intent(this, InterMediateActivity.class);
             i.putExtra(URL, clickItem.getUrl());
-            startActivity(i);
+            startActivity(i);;
         }
     }
 
