@@ -253,7 +253,6 @@ public class PofileActivity extends AppCompatActivity{
             uploadImagetoFirebase();
         }
         if(requestCode==440 && resultCode==RESULT_OK ){
-           // imageUri=data.getData();
             uploadImagetoFirebase();
         }
 

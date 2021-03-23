@@ -384,7 +384,7 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
                 if (!checkPermissionFromDevice()) {
                     binding.btEmoji.setVisibility(View.INVISIBLE);
                     binding.btnAttachment.setVisibility(View.INVISIBLE);
-                    binding.btnCamera.setVisibility(View.INVISIBLE);
+                    //binding.btnCamera.setVisibility(View.INVISIBLE);
                     binding.edMessage.setVisibility(View.INVISIBLE);
 
                     startRecord();
@@ -412,7 +412,7 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
             public void onFinish(long recordTime) {
                 binding.btEmoji.setVisibility(View.VISIBLE);
                 binding.btnAttachment.setVisibility(View.VISIBLE);
-                binding.btnCamera.setVisibility(View.VISIBLE);
+             //   binding.btnCamera.setVisibility(View.VISIBLE);
                 binding.edMessage.setVisibility(View.VISIBLE);
 
                 //Stop Recording..
@@ -428,7 +428,7 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
             public void onLessThanSecond() {
                 binding.btEmoji.setVisibility(View.VISIBLE);
                 binding.btnAttachment.setVisibility(View.VISIBLE);
-                binding.btnCamera.setVisibility(View.VISIBLE);
+              //  binding.btnCamera.setVisibility(View.VISIBLE);
                 binding.edMessage.setVisibility(View.VISIBLE);
             }
         });
@@ -437,7 +437,7 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
             public void onAnimationEnd() {
                 binding.btEmoji.setVisibility(View.VISIBLE);
                 binding.btnAttachment.setVisibility(View.VISIBLE);
-                binding.btnCamera.setVisibility(View.VISIBLE);
+               // binding.btnCamera.setVisibility(View.VISIBLE);
                 binding.edMessage.setVisibility(View.VISIBLE);
             }
         });
@@ -561,7 +561,7 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
             mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
             mediaRecorder.setOutputFile(path_save);
         } catch (Exception e) {
-            Log.d("setUomediaRecorder", "setUpMediaRecord: " + e.getMessage());
+            //Log.d("setUomediaRecorder", "setUpMediaRecord: " + e.getMessage());
         }
 
 
@@ -619,8 +619,7 @@ public class ChatsActivity extends AppCompatActivity implements ChatsAdapter.OnI
                     Chats chats=snapshot.getValue(Chats.class);
                     try {
                         if ( chats.getSender().equals(firebaseUser.getUid()) && chats.getReceiver().equals(receiverID)
-                                || chats.getReceiver().equals(firebaseUser.getUid()) && chats.getSender().equals(receiverID)
-                        )
+                                || chats.getReceiver().equals(firebaseUser.getUid()) && chats.getSender().equals(receiverID))
                         {
                             list.add(chats);
                         }

@@ -59,7 +59,7 @@
                     android:layout_weight="1"
                     android:text="MyStatus"
 
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/mainText"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 

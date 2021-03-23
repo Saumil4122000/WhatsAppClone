@@ -38,7 +38,7 @@ public class VerifyPhone extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verify_phone);
-        //FirebaseUser firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
+
         otp = (EditText) findViewById(R.id.otp);
         verify_btn = (Button) findViewById(R.id.verify);
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
@@ -51,7 +51,7 @@ public class VerifyPhone extends AppCompatActivity {
             startActivity(new Intent(this,SetUserInfoActivity.class));
         }
         String phoneNo = getIntent().getStringExtra("phoneNo");
-    sendVerificationCodeToUser(phoneNo);
+        sendVerificationCodeToUser(phoneNo);
 
         verify_btn.setOnClickListener(new View.OnClickListener() {
             @Override

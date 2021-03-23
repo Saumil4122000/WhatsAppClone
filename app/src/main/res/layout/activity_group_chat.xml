@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/whatsapp_background_image"
+    tools:context=".view.GroupChat.GroupChatActivity">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/groupIconTv"
+                android:layout_width="30dp"
+                app:civ_border="false"
+                android:layout_height="30dp"
+                android:src="@drawable/icon_male_ph"/>
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_toEndOf="@+id/groupIconTv"
+               android:text="Group Name"
+               android:id="@+id/grouptitleTv"
+               android:layout_marginStart="10dp"
+               android:layout_centerVertical="true"
+               android:textColor="@color/primaryTextColor"
+               android:textSize="18sp"
+               android:textStyle="bold"/>
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:id="@+id/chatRv"
+
+
+
+        android:layout_above="@id/chatLayout"/>
+    <LinearLayout
+        android:id="@+id/chatLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:id="@+id/root_view"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/LL"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                app:cardCornerRadius="25dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:orientation="horizontal"
+                    android:paddingStart="15dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="15dp"
+                    android:paddingBottom="5dp">
+
+                    <ImageView
+                        android:id="@+id/bt_emoji"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/emoji"
+                        app:tint="@color/colorPrimary" />
+
+                    <EditText
+                        android:id="@+id/messageEt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:hint="Type a message"
+                        android:padding="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/btn_attachment"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginRight="15dp"
+                        android:src="@drawable/ic_baseline_attachment_24"
+                        app:tint="@color/colorPrimary" />
+
+                    <ImageView
+                        android:id="@+id/btn_camera"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_camera_photo"
+                        app:tint="@color/colorPrimary" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/sendBtn"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:src="@drawable/ic_baseline_send_24"
+                android:tint="@android:color/white"
+                android:visibility="visible" />
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>

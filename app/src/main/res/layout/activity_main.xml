@@ -69,6 +69,10 @@
             android:layout_margin="15dp"
             android:layout_alignParentRight="true" />
 
-
+<com.google.android.material.bottomnavigation.BottomNavigationView
+    android:layout_width="wrap_content"
+    android:id="@+id/bottom_nav"
+    android:layout_height="wrap_content"
+    />
     </RelativeLayout>
 </layout>

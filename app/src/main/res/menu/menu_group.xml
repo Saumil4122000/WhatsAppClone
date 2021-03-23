@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:title="Add group Participant"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_addperson_white"
+        android:id="@+id/action_add_participant"/>
+    <group android:id="@+id/action_more">
+
+        <item android:title="Group Info" android:id="@+id/action_group_info"/>
+
+
+        <item android:title="Group Media" android:id="@+id/action_group_media"/>
+
+
+
+        <item android:title="Search" android:id="@+id/action_search"/>
+    </group>
+</menu>

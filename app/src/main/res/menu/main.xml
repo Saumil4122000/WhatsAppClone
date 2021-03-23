@@ -10,17 +10,16 @@
         android:id="@+id/menu_search"/>
 
 
+
     <group android:id="@+id/action_more">
 
     <item android:title="New Group" android:id="@+id/action_new_group"/>
 
-    <item android:title="New broadcast" android:id="@+id/action_new_broadcast"/>
 
     <item android:title="WhatsApp Web" android:id="@+id/action_wa_web"/>
 
-    <item android:title="Starred message" android:id="@+id/action_starred_message"/>
+
 
     <item android:title="Settings" android:id="@+id/action_settings"/>
-
 </group>
 </menu>

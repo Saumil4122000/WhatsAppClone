@@ -1,58 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<LinearLayout android:orientation="horizontal"
-    android:padding="10dp"
-    android:layout_height="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content"
+    android:padding="10dp">
 
     <com.mikhaellopez.circularimageview.CircularImageView
-        android:layout_height="60dp"
+        android:id="@+id/image_profile"
         android:layout_width="60dp"
-        app:civ_border="false"
+        android:layout_height="60dp"
         android:src="@drawable/ic_baseline_person_24"
-        android:id="@+id/image_profile"/>
+        app:civ_border="false" />
 
 
-    <LinearLayout android:orientation="vertical"
-        android:layout_height="wrap_content"
+    <LinearLayout
         android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
         android:layout_weight="1"
-        android:layout_marginLeft="10dp">
+        android:orientation="vertical">
 
 
-        <LinearLayout android:orientation="horizontal"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:layout_width="match_parent">
+            android:orientation="horizontal">
 
-            <TextView android:layout_height="wrap_content"
-                android:layout_width="0dp"
+            <TextView
                 android:id="@+id/tv_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Username"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                android:textSize="16sp"/>
+                android:textColor="@color/mainText"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-            <TextView android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
+            <TextView
                 android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="15/04/2020"
                 android:textColor="#2E2E2E"
-                android:textSize="14sp"/>
+                android:textSize="14sp" />
 
         </LinearLayout>
 
-        <TextView android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
+        <TextView
             android:id="@+id/tv_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Description.."
-            android:textColor="#2E2E2E"
-            android:textSize="14sp"/>
+            android:textColor="@color/textAlt"
+            android:textSize="14sp" />
 
     </LinearLayout>
 

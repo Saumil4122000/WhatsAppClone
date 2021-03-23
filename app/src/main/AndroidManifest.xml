@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.geeksproject">
 
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -25,8 +26,20 @@
         android:roundIcon="@mipmap/whatsapp"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".GroupCreateActivity"></activity>
-        <activity android:name=".view.status.DisplayStatusActivity" />
+        <activity android:name=".GroupEditActivity"></activity>
+        <activity android:name=".GroupInfoActivity" />
+        <activity
+            android:name=".GroupParticipantAddActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.GroupChat.GroupChatActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".GroupCreateActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.status.DisplayStatusActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.status.AddStatusPicActivity"
             android:theme="@style/AppTheme.NoActionBar" />

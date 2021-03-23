@@ -2,13 +2,10 @@ package com.example.geeksproject.menu;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.TokenWatcher;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -20,7 +17,6 @@ import com.example.geeksproject.R;
 import com.example.geeksproject.adapters.ChatListAdapter;
 import com.example.geeksproject.databinding.FragmentChatsBinding;
 import com.example.geeksproject.model.Chatlist;
-import com.example.geeksproject.model.user.Users;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,7 +25,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -40,13 +35,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChatsFragment extends Fragment {
-
-
-    private static final String TAG = "ChatsFragment";
-
-    public ChatsFragment() {
-    }
-
     private FirebaseUser firebaseUser;
     private DatabaseReference reference;
     private  FirebaseFirestore firebaseFirestore;
@@ -60,37 +48,38 @@ public class ChatsFragment extends Fragment {
 
     private ChatListAdapter adapter;
 
+
+    private static final String TAG = "ChatsFragment";
+
+    public ChatsFragment() {
+    }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_chats, container, false);
-
-        list = new ArrayList<>();
         allUserID = new ArrayList<>();
-
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.recyclerView.setAdapter(adapter);
-        adapter = new ChatListAdapter(list,getContext());
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference();
         firebaseFirestore = FirebaseFirestore.getInstance();
-
-
         if (firebaseUser!=null) {
             getChatList();
         }
+
+
         updateToken(FirebaseInstanceId.getInstance().getToken());
         return binding.getRoot();
     }
 
-
     private void getChatList() {
         binding.progressCircular.setVisibility(View.VISIBLE);
-        list.clear();
+        list = new ArrayList<>();
         allUserID.clear();
         reference.child("ChatList").child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                list.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
 
@@ -98,8 +87,12 @@ public class ChatsFragment extends Fragment {
 
                             binding.progressCircular.setVisibility(View.GONE);
                             allUserID.add(userID);
-  }
+                    }
                              getUserInfo();
+                 if (allUserID.size()==0){
+                     binding.progressCircular.setVisibility(View.GONE);
+                     Toast.makeText(getContext(),"Please send text by clicking on floatinf button",Toast.LENGTH_LONG).show();
+                 }
             }
 
             @Override
@@ -117,13 +110,10 @@ public class ChatsFragment extends Fragment {
             @Override
             public void run() {
                 for (String userID : allUserID){
-
-                    Log.d(TAG,"From UserInfo"+userID);
                     DocumentReference documentReference=firebaseFirestore.collection("Users").document(userID);
                     documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                         @Override
                         public void onSuccess(DocumentSnapshot documentSnapshot) {
-                            Log.d(TAG, "onSuccess: ddd"+documentSnapshot.getString("userName"));
                             try {
                                 Chatlist chat = new Chatlist(
                                         documentSnapshot.getString("userID"),
@@ -134,12 +124,12 @@ public class ChatsFragment extends Fragment {
                                 );
                                 list.add(chat);
                             }catch (Exception e){
-                                Log.d(TAG, "onSuccess: "+e.getMessage());
+
                             }
                             if (adapter!=null){
                                 adapter.notifyItemInserted(0);
                                 adapter.notifyDataSetChanged();
-                                 Log.d(TAG, "onSuccess: adapter "+adapter.getItemCount());
+
                             }
 
 
@@ -148,12 +138,15 @@ public class ChatsFragment extends Fragment {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Log.d(TAG, "onFailure: Error L"+e.getMessage());
+
                         }
                     });
                 }
             }
         });
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.recyclerView.setAdapter(adapter);
+        adapter = new ChatListAdapter(list,getContext());
     }
 public void updateToken(String token){
         DatabaseReference reference=FirebaseDatabase.getInstance().getReference("Token");
@@ -161,6 +154,7 @@ public void updateToken(String token){
         reference.child(firebaseUser.getUid()).setValue(token1);
 
 }
+
 }
 
 

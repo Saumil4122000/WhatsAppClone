@@ -76,7 +76,7 @@ private ActivityAddStatusPicBinding binding;
 
                    @Override
                    public void onUploadFailed(Exception e) {
-                       Log.e("Addstatusdata","OnUploadFailure " +e.getMessage());
+                      // Log.e("Addstatusdata","OnUploadFailure " +e.getMessage());
                    }
                });
             }

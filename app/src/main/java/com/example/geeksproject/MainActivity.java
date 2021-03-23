@@ -31,12 +31,13 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.geeksproject.contact.ContactsActivity;
 import com.example.geeksproject.databinding.ActivityMainBinding;
-import com.example.geeksproject.menu.CallsFragment;
 import com.example.geeksproject.menu.CameraFragment;
 import com.example.geeksproject.menu.ChatsFragment;
+import com.example.geeksproject.menu.GroupChatsFragment;
 import com.example.geeksproject.menu.StatusFragment;
 import com.example.geeksproject.view.settings.SettingsActivity;
 import com.example.geeksproject.view.status.AddStatusPicActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,6 +51,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     public static Uri imageUri=null;
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setUpWithViewPager(binding.viewPager);
         binding.tabLayout.setupWithViewPager(binding.viewPager);
-
+        bottomNavigationView=findViewById(R.id.bottom_nav);
 
         View tab1= LayoutInflater.from(getApplicationContext()).inflate(R.layout.custom_camera,null);
         try {
@@ -93,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new CameraFragment(),"Camera");
         adapter.addFragment(new ChatsFragment(),"Chats");
         adapter.addFragment(new StatusFragment(),"Status");
-        adapter.addFragment(new CallsFragment(),"Calls");
+        adapter.addFragment(new GroupChatsFragment(),"Groups");
         viewPager.setAdapter(adapter);
 
     }
@@ -136,21 +138,21 @@ public class MainActivity extends AppCompatActivity {
 
         switch (id){
             case R.id.menu_search :
-                EditText editText=findViewById(R.id.searchtext);
-                editText.setVisibility(View.VISIBLE);
+                Toast.makeText(getApplicationContext(),"SEACH",Toast.LENGTH_LONG).show();
             break;
-
             case R.id.action_new_group :  startActivity(new Intent(getApplicationContext(),GroupCreateActivity.class)); break;
-            case R.id.action_new_broadcast :  Toast.makeText(MainActivity.this, "Action New Broadcast", Toast.LENGTH_LONG).show(); break;
+
             case R.id.action_wa_web :  Toast.makeText(MainActivity.this, "Action Web", Toast.LENGTH_LONG).show(); break;
-            case R.id.action_starred_message : Toast.makeText(MainActivity.this, "Action starred message", Toast.LENGTH_LONG).show();
-                break;
+
             case R.id.action_settings :
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
                 break;
+
         }
         return super.onOptionsItemSelected(item);
     }
+
+
     private void changeFabICon(final int index){
         binding.btnAddStatus.setVisibility(View.GONE);
 
@@ -239,8 +241,6 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode==440 && resultCode==RESULT_OK ){
-            // imageUri=data.getData();
-            //uploadImagetoFirebase();
             if (imageUri!=null){
                 startActivity(new Intent(MainActivity.this, AddStatusPicActivity.class)
                 .putExtra("image",imageUri));

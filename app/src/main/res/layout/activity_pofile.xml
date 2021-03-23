@@ -29,11 +29,10 @@
     <com.mikhaellopez.circularimageview.CircularImageView
         android:layout_width="200dp"
         android:layout_height="200dp"
-        app:civ_border="false"
-        app:civ_border_color="@color/grey_60"
+
         android:id="@+id/image_profile"
         android:scaleType="centerCrop"
-        android:src="@drawable/shraddhaimg"/>
+        android:src="@drawable/icon_male_ph"/>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -7,17 +7,17 @@
     android:padding="20dp"
     android:background="#eee"
     tools:context=".GroupCreateActivity">
-<com.mikhaellopez.circularimageview.CircularImageView
-    android:layout_width="200dp"
-    android:layout_height="200dp"
-    android:layout_centerHorizontal="true"
-    app:civ_border="true"
-    app:civ_border_color="@color/black"
-    app:civ_border_width="2dp"
-    android:id="@+id/groupIconTv"
-    android:src="@drawable/ic_baseline_group_24"
-    android:tint="@color/colorPrimary"
-    />
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        app:civ_border="true"
+        app:civ_border_color="@color/black"
+        app:civ_border_width="2dp"
+        android:id="@+id/groupIconTv"
+        android:src="@drawable/ic_baseline_group_24"
+        android:tint="@color/colorPrimary"
+        />
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +25,6 @@
         android:layout_below="@+id/groupIconTv"
         android:layout_marginTop="10dp"
         android:padding="10dp"
-        android:textColor="@color/mainText"
         android:id="@+id/grouptitleTv"
         android:hint="Enter Group Name"
         />
@@ -39,14 +38,13 @@
         android:padding="10dp"
         android:minHeight="100dp"
         android:gravity="top"
-        android:textColor="@color/mainText"
         android:inputType="textMultiLine|textCapSentences"
         android:id="@+id/groupdescription"
         android:hint="Enter Group Name"
         />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/creategrpButton"
+        android:id="@+id/updategrpButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

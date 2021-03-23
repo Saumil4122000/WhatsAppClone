@@ -152,12 +152,12 @@ public class ChatService {
                 reference.child("Chats").push().setValue(chats).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d("Send", "onSuccess: ");
+                       // Log.d("Send", "onSuccess: ");
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d("Send", "onFailure: "+e.getMessage());
+                      //  Log.d("Send", "onFailure: "+e.getMessage());
                     }
                 });
 

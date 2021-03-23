@@ -19,6 +19,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -70,11 +71,11 @@ public class GroupCreateActivity extends AppCompatActivity {
         groupIconTv=findViewById(R.id.groupIconTv);
         groupdescription= findViewById(R.id.groupdescription);
         creategrpButton=findViewById(R.id.creategrpButton);
-        actionBar=getSupportActionBar();
+       // actionBar=getSupportActionBar();
         groupEitletext=findViewById(R.id.grouptitleTv);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle("Create Group");
+        //actionBar.setDisplayHomeAsUpEnabled(true);
+      //  actionBar.setDisplayHomeAsUpEnabled(true);
+        //actionBar.setTitle("Create Group");
         firebaseAuth=FirebaseAuth.getInstance();
         checkUser();
 
@@ -123,7 +124,6 @@ public class GroupCreateActivity extends AppCompatActivity {
                    while (!p_uriTask.isSuccessful());
                        Uri p_downloadUri=p_uriTask.getResult();
                        if (p_uriTask.isSuccessful()){
-                           Glide.with(getApplicationContext()).load(p_downloadUri).into(groupIconTv);
                            createGroup(""+s_timestamp,
                                    ""+groupTitle,
                                    ""+groupDescription,p_downloadUri.toString());
@@ -219,13 +219,21 @@ public class GroupCreateActivity extends AppCompatActivity {
 
 
     private void pickfromCamera() {
-        ContentValues cv=new ContentValues();
-        cv.put(MediaStore.Images.Media.TITLE,"Group Image Icon Title");
-        cv.put(MediaStore.Images.Media.DESCRIPTION,"Group Image Icon Description");
-        imageUri=getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,cv);
-        Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
-        startActivityIfNeeded(intent,IMAGE_PICK_CAMERA_CODE);
+
+        try {
+
+
+            ContentValues cv = new ContentValues();
+            cv.put(MediaStore.Images.Media.TITLE, "Group Image Icon Title");
+            cv.put(MediaStore.Images.Media.DESCRIPTION, "Group Image Icon Description");
+            imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cv);
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+            startActivityIfNeeded(intent, IMAGE_PICK_CAMERA_CODE);
+        }catch (Exception e){
+            Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+        //    Log.d("cAMERA",e.getMessage());
+        }
     }
 private boolean checkStroragePermission(){
         boolean result= ContextCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE)==(PackageManager.PERMISSION_GRANTED);
@@ -246,7 +254,7 @@ private void requestCameraPermission(){
     private void checkUser() {
         FirebaseUser user=firebaseAuth.getCurrentUser();
         if (user!=null){
-            actionBar.setSubtitle(user.getPhoneNumber());
+            //actionBar.setSubtitle(user.getPhoneNumber());
         }
     }
 
@@ -295,14 +303,13 @@ private void requestCameraPermission(){
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode==RESULT_OK) {
+        if (resultCode==RESULT_OK) {
 
             if (requestCode == IMAGE_PICK_GALLERY_CODE) {
                     imageUri=data.getData();
                     groupIconTv.setImageURI(imageUri);
             }
             else if (requestCode==IMAGE_PICK_CAMERA_CODE){
-                imageUri=data.getData();
                 groupIconTv.setImageURI(imageUri);
             }
         }
