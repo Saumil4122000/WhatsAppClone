@@ -91,7 +91,7 @@ public class ChatsFragment extends Fragment {
                              getUserInfo();
                  if (allUserID.size()==0){
                      binding.progressCircular.setVisibility(View.GONE);
-                     Toast.makeText(getContext(),"Please send text by clicking on floatinf button",Toast.LENGTH_LONG).show();
+                    // Toast.makeText(getContext(),"Please send text by clicking on floatinf button",Toast.LENGTH_LONG).show();
                  }
             }
 

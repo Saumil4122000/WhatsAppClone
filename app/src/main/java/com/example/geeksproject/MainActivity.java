@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
                        // Toast.makeText(getApplicationContext(),"Camera",Toast.LENGTH_LONG).show();
                         chechCameraPermissio();
                     }else {
-                        Toast.makeText(getApplicationContext(),"Csll",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),"Call",Toast.LENGTH_LONG).show();
                     }
                 });
         binding.btnAddStatus.setOnClickListener(new View.OnClickListener() {
